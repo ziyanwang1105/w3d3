@@ -190,6 +190,26 @@ def merge_sort(array)
     res
 
 end
-p a= (1..10).to_a.shuffle
-p a
-p merge_sort(a)
+# p a= (1..10).to_a.shuffle
+# p a
+# p merge_sort(a)
+
+def subsets(arr)
+    return [[]] if arr.length == 0
+
+    new_element = arr[-1]
+    prev_subset = subsets(arr[0...-1])
+    res = []
+    
+    res += prev_subset
+    prev_subset.each do |ele|
+        new_res = ele.deep_dup
+        new_res << new_element
+        res << new_res
+    end
+
+    res
+end
+
+p subsets([1,2,3])
+p subsets([1,2,3,4])
