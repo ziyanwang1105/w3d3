@@ -234,3 +234,26 @@ def permutation(array)
 
 end
 # p permutation([1, 2, 3, 4])
+
+def greedy_make_change(target, array) # 24, [10, 7, 1]
+    counter = Hash.new(0)
+
+    biggest_coin = array.shift
+    until target < biggest_coin
+        target -= biggest_coin
+        counter[biggest_coin] += 1
+    end
+    
+    counter.merge(greedy_make_change(target, array))
+    # array.each do |coin|
+    #     if coin < target
+    #         counter[coin] += 1
+    #         counter.merge(greedy_make_change(target-coin, array)) {|k, v1, v2| v1 + v2}
+    #     elsif coin == target
+    #         counter[coin] += 1
+    #     end
+    # end
+    return counter when target == 0
+end
+
+p greedy_make_change(24, [10, 7, 1])
