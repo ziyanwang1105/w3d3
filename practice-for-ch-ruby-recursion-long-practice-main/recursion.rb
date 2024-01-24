@@ -200,7 +200,7 @@ def subsets(arr)
     new_element = arr[-1]
     prev_subset = subsets(arr[0...-1])
     res = []
-    
+
     res += prev_subset
     prev_subset.each do |ele|
         new_res = ele.deep_dup
@@ -211,5 +211,26 @@ def subsets(arr)
     res
 end
 
-p subsets([1,2,3])
-p subsets([1,2,3,4])
+# p subsets([1,2,3])
+# p subsets([1,2,3,4])
+
+
+def permutation(array)
+
+    n = array.length
+    return [array] if n == 1
+
+    res = []
+    new_element = array[-1]
+    prev_permutation = permutation(array[0...-1])
+    prev_permutation.each do |ele|
+        (0...n).each do |i|
+            sub_result = ele.deep_dup
+            sub_result.insert(i, new_element)
+            res << sub_result
+        end
+    end
+    res
+
+end
+# p permutation([1, 2, 3, 4])
