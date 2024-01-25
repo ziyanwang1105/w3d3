@@ -1,4 +1,6 @@
 
+require 'byebug'
+
 def range(min, max)
 
     return [] if max <= min
@@ -238,22 +240,42 @@ end
 def greedy_make_change(target, array) # 24, [10, 7, 1]
     counter = Hash.new(0)
 
-    biggest_coin = array.shift
+    biggest_coin = array.shift#1
     until target < biggest_coin
         target -= biggest_coin
         counter[biggest_coin] += 1
     end
-    
-    counter.merge(greedy_make_change(target, array))
-    # array.each do |coin|
-    #     if coin < target
-    #         counter[coin] += 1
-    #         counter.merge(greedy_make_change(target-coin, array)) {|k, v1, v2| v1 + v2}
-    #     elsif coin == target
-    #         counter[coin] += 1
-    #     end
-    # end
-    return counter when target == 0
+
+    if target > 0
+        sub_change = greedy_make_change(target, array)#{1 =>4} [1]
+        counter.merge!(sub_change){|k, v1, v2| v1 + v2}
+    end
+
+    counter
 end
 
-p greedy_make_change(24, [10, 7, 1])
+# p greedy_make_change(24, [10, 7, 1])
+# p greedy_make_change(33, [25,10,5,1])
+
+def make_better_change(target, array)
+    hash_list = []
+    array.each_with_index do |coin, i|
+        counter = Hash.new(0)
+        if target == coin
+            counter[coin] +=1
+            return counter
+        end
+
+        if target > coin && target >= 0
+            counter[coin] +=1
+            sub_change = make_better_change(target - coin,array[i..-1])
+            counter.merge!(sub_change){|k, v1, v2| v1 + v2}
+        end
+        hash_list << counter if counter.length > 0
+    end
+    debugger
+    hash_list.min {|hash| hash.values.sum}
+end
+# debugger
+# p make_better_change(24, [10,7,1])
+p make_better_change(14, [10,7,1])
